@@ -222,10 +222,10 @@ class EffiSegNetBN(nn.Module):
             x4 = self.conv11(x4)
             
             
-            x = self.classifier(x)
+            x = self.classifier(x).squeeze()
             return x, [x0, x1, x2, x3, x4]
         
-        x = self.classifier(x)
+        x = self.classifier(x).squeeze()
         return x
 
 
