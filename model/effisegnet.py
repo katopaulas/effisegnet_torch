@@ -164,11 +164,17 @@ class EffiSegNetBN(nn.Module):
         self.conv6 = nn.Conv2d(ch, 1, kernel_size=1, stride=1, padding=0, bias=False)
 
         # 224 because upsampled_size from get_efficientnet_image_size | MONAI
-        self.classifier =  nn.Sequential(nn.Flatten(),
-                                         nn.Linear(224*224,1),
-                                         nn.Sigmoid()
-         )
+        # self.classifier =  nn.Sequential(nn.Flatten(),
+        #                                  nn.Linear(224*224,1),
+        #                                  #.Sigmoid()
+        #  )
        
+        self.classifier =  nn.Sequential(nn.Flatten(),
+                                         nn.Linear(224*224,64),
+                                         nn.GELU(),
+                                         nn.Dropout(0.3),
+                                         nn.Linear(64,1),
+                                         )
 
     def forward(self, x):
         x0, x1, x2, x3, x4 = self.encoder(x)
